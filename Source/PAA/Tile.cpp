@@ -345,6 +345,19 @@ void ATile::OnTileClicked(UPrimitiveComponent* TouchedComponent, FKey ButtonPres
 				if (Unit->CurrentTile == this)
 				{
 					
+					if (Unit->bHasActedThisTurn)
+					{
+						
+						if (Grid->UnitWidget)
+						{
+							Grid->UnitWidget->ShowErrorMessage(TEXT("This player has already acted in this turn"));
+						}
+
+						UE_LOG(LogTemp, Warning, TEXT("️ Tentativo di selezionare [%s] che ha già agito!"), *Unit->GetName());
+						return; 
+					}
+
+					
 					if (Grid->SelectedTile)
 						Grid->SelectedTile->SetHighlight(false);
 
@@ -355,9 +368,9 @@ void ATile::OnTileClicked(UPrimitiveComponent* TouchedComponent, FKey ButtonPres
 					UE_LOG(LogTemp, Warning, TEXT(" Unità selezionata manualmente sulla cella [%s]!"), *GetTileCoordinateLabel());
 
 					Grid->ShowMovementRangeForSelectedUnit();
-
 					return;
 				}
+
 			}
 		}
 
